@@ -1,0 +1,15 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-I/home/light/manager/inc",
+      "-c",
+      "-o",
+      "CMakeFiles/ObjWM.dir/src/main.cpp.o",
+      "/home/light/manager/src/main.cpp"
+    ],
+    "directory": "/home/light/manager/build",
+    "file": "/home/light/manager/src/main.cpp",
+    "output": "/home/light/manager/build/CMakeFiles/ObjWM.dir/src/main.cpp.o"
+  }
+]

@@ -1,0 +1,16 @@
+/build/
+/inc/..window.hpp.~undo-tree~.~undo-tree~
+/inc/.window.hpp.~undo-tree~
+/inc/.window_manager.hpp.~undo-tree~
+/inc/.workspaces.hpp.~undo-tree~
+/inc/window.hpp~
+/inc/window_manager.hpp~
+/inc/workspaces.hpp~
+/src/.main.cpp.~undo-tree~
+/src/.window.cpp.~undo-tree~
+/src/.window_manager.cpp.~undo-tree~
+/src/.workspaces.cpp.~undo-tree~
+/src/main.cpp~
+/src/window.cpp~
+/src/window_manager.cpp~
+/src/workspaces.cpp~
