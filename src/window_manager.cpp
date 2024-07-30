@@ -57,12 +57,23 @@ void WindowManager::keypress(XKeyEvent &e)
 {
   if(e.state & Mod1Mask)
   {
-	if(isKey(keyBindings[0]))
+	if(isKey("D"))
 	{
 	  std::cout << "starting up dmenu";
 	  system("dmenu_run&");
 	}
+	else if (isKey("Q"))
+	{
+	  XCloseDisplay(display_);
+	  //kill_window(e.window);	
+	}
   }
+}
+
+void WindowManager::setkeys()
+{
+  MOD1BIND("D");//open dmenu
+  MOD1BIND("Q");
 }
 
 void WindowManager::frame(Window &w)
@@ -80,19 +91,6 @@ void WindowManager::on_map_request(XMapRequestEvent &e)
   focused = e.window; 
 }
 
-void WindowManager::setkeys()
-{
-  const int totalKeys = 1;
-  char keyBindings[totalKeys][2] = {'D'};
-	for (int i = 0; i < totalKeys; i++)
-	{
-		MOD1BIND(keyBindings[i]);
-	}
-
-	// Some extra hardcoded binds
-
-	MOD1BIND("Return");
-}
 
 // Adds mousebutton listeners
 void WindowManager::setbuttons()
