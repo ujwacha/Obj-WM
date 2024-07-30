@@ -1,9 +1,13 @@
+#include <X11/X.h>
 extern "C" {
 #include <X11/Xlib.h>
 };
 
 #include "memory"
 #include "workspaces.hpp"
+
+#define isKey(K) e.keycode == XKeysymToKeycode(display_, XStringToKeysym(K))
+
 
 class WindowManager {
 public:
@@ -18,6 +22,9 @@ private:
   WindowManager(Display* display);
   static int on_x_err(Display* display, XErrorEvent* e);
   static int on_wm_detected(Display* display, XErrorEvent* e);
+  void on_map_request(const XMapRequestEvent &e);
+  void frame(Window w);
+  void keypress(const XKeyEvent &e);
 
   Display* display_;
   const Window root_;
