@@ -7,6 +7,8 @@ extern "C" {
 #include "workspaces.hpp"
 
 #define isKey(K) e.keycode == XKeysymToKeycode(display_, XStringToKeysym(K))
+#define MOD1BIND(K) XGrabKey(display_, XKeysymToKeycode(display_, XStringToKeysym(K)), Mod1Mask, root_, True, GrabModeAsync, GrabModeAsync)
+
 
 
 class WindowManager {
@@ -25,9 +27,14 @@ private:
   void on_map_request(const XMapRequestEvent &e);
   void frame(Window w);
   void keypress(const XKeyEvent &e);
+  void setkeys();
+  void setbuttons();
+  void handle_events(const XEvent &e);
+
 
   Display* display_;
   const Window root_;
   Workspaces workspaces;
+  Window focused;
 };
 

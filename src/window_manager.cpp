@@ -2,10 +2,13 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <csignal>
+#include <cstdio>
 #include <cstdlib>
 #include <glog/logging.h>
+#include <iterator>
 #include <memory>
 #include <iostream>
+#include <unistd.h>
 
 using ::std::unique_ptr;
 
@@ -53,46 +56,70 @@ void WindowManager::keypress(const XKeyEvent &e)
   {
 	if(isKey(keyBindings[0]))
 	{
-	 // std::cout << "starting up dmenu";
-	 // system("dmenu_run&");
-	 XDestroyWindow(display_, e.window);
+	  std::cout << "starting up dmenu";
+	  system("dmenu_run&");
 	}
   }
 }
 
-void WindowManager::frame(Window w)
-{
-  const unsigned int border_width = 3;
-  const unsigned long border_color = 0xffffff;
-  const unsigned long bg_color = 0x000000; 
-
-  XWindowAttributes x_window_attrs;
-  CHECK(XGetWindowAttributes(display_, w, &x_window_attrs));
-
-  const Window frame = XCreateSimpleWindow(display_,
-	  root_,
-	  x_window_attrs.x,
-	  x_window_attrs.y,
-	  x_window_attrs.width,
-	  x_window_attrs.height,
-	  border_width,
-	  border_color,
-	  bg_color);
-
-  XSelectInput(display_, w, SubstructureNotifyMask | SubstructureRedirectMask);
-
-  XAddToSaveSet(display_, w);
-
-  XReparentWindow(display_, w, frame, 0, 0);
-
-  XMapWindow(display_, frame);
-}
 
 void WindowManager::on_map_request(const XMapRequestEvent &e)
 {
-  frame(e.window);
-  
-  XMapWindow(display_, e.window);
+  if(e.parent ==  root_)
+  {
+	XMapWindow(display_, e.window);
+  }
+  focused = e.window; 
+}
+
+void WindowManager::setkeys()
+{
+	for (int i = 0; i < totalKeys; i++)
+	{
+		MOD1BIND(keyBindings[i]);
+	}
+
+	// Some extra hardcoded binds
+
+	MOD1BIND("Return");
+}
+
+// Adds mousebutton listeners
+void WindowManager::setbuttons()
+{
+	XGrabButton(display_, 1, Mod1Mask, root_, True, ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
+}
+
+void WindowManager::handle_events(const XEvent &e)
+{
+  std::cout << "event detected";
+  switch (e.type)
+  {
+	case CreateNotify:
+	  break;
+	case ConfigureRequest:
+	  break;
+	case MapRequest:
+	  on_map_request(e.xmaprequest);
+	  break;
+	case DestroyNotify:
+	  break;
+	case KeyPress:
+	  LOG(INFO)<<"key pressed";
+	  keypress(e.xkey);
+	  break;
+	case FocusIn:
+	  printf("focusin event just came, 0x%lx gained focus \n\n\n", e.xfocus.window);
+	  break;
+	case FocusOut:
+	  printf("focusout event just came, 0x%lx gained focus \n\n\n", e.xfocus.window);
+	  break;
+	case MotionNotify:
+	case ButtonPress:
+	  break;
+	case ButtonRelease:
+	  break;
+  }
 }
 
 
@@ -105,6 +132,8 @@ void WindowManager::Run() {
   XSelectInput(display_, root_, SubstructureRedirectMask | SubstructureNotifyMask);
 
   XSync(display_, false);
+  setkeys();
+  setbuttons();
 
   if (wm_detected_) {
 	LOG(ERROR) << "[Error] Another WM detected " << XDisplayString(display_);
@@ -113,42 +142,12 @@ void WindowManager::Run() {
   }
 
   XSetErrorHandler(&WindowManager::on_x_err);
+  XEvent e;
 
-  while (1) {
-	std::cout << "entered the main event loop \n";
-	XEvent e;
+  for(;;){
 	XNextEvent(display_,&e);
-
-	switch (e.type)
-	{
-	  case CreateNotify:
-		break;
-	  case ConfigureRequest:
-		break;
-	  case MapRequest:
-		on_map_request(e.xmaprequest);
-		break;
-	  case DestroyNotify:
-		break;
-	  case KeyPress:
-		LOG(INFO)<<"key pressed";
-		keypress(e.xkey);
-		break;
-	  case FocusIn:
-		printf("focusin event just came, 0x%lx gained focus \n\n\n", e.xfocus.window);
-		break;
-	  case FocusOut:
-		printf("focusout event just came, 0x%lx gained focus \n\n\n", e.xfocus.window);
-		break;
-	  case MotionNotify:
-	  case ButtonPress:
-		break;
-	  case ButtonRelease:
-		break;
-	}
-
+	handle_events(e);
 	XSync(display_, False);
-
   }
 
 }
