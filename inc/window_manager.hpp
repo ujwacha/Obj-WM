@@ -24,12 +24,13 @@ private:
   WindowManager(Display* display);
   static int on_x_err(Display* display, XErrorEvent* e);
   static int on_wm_detected(Display* display, XErrorEvent* e);
-  void on_map_request(const XMapRequestEvent &e);
-  void frame(Window w);
-  void keypress(const XKeyEvent &e);
+  void on_map_request(XMapRequestEvent &e);
+  void frame(Window &w);
+  void keypress(XKeyEvent &e);
   void setkeys();
   void setbuttons();
-  void handle_events(const XEvent &e);
+  void handle_events(XEvent &e);
+  void kill_window(Window &w);
 
 
   Display* display_;

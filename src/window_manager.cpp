@@ -12,8 +12,6 @@
 
 using ::std::unique_ptr;
 
-#define totalKeys 1
-const char keyBindings[totalKeys][2] = {'D'};
 bool WindowManager::wm_detected_ = false;
 
 unique_ptr<WindowManager> WindowManager::Create() {
@@ -50,7 +48,12 @@ int WindowManager::on_x_err(Display* display, XErrorEvent* event) {
   return -1;
 }
 
-void WindowManager::keypress(const XKeyEvent &e)
+void WindowManager::kill_window(Window &w)
+{
+  XDestroyWindow(display_, w);
+}
+
+void WindowManager::keypress(XKeyEvent &e)
 {
   if(e.state & Mod1Mask)
   {
@@ -62,11 +65,16 @@ void WindowManager::keypress(const XKeyEvent &e)
   }
 }
 
+void WindowManager::frame(Window &w)
+{
+  return;
+}
 
-void WindowManager::on_map_request(const XMapRequestEvent &e)
+void WindowManager::on_map_request(XMapRequestEvent &e)
 {
   if(e.parent ==  root_)
   {
+	frame(e.window);
 	XMapWindow(display_, e.window);
   }
   focused = e.window; 
@@ -74,6 +82,8 @@ void WindowManager::on_map_request(const XMapRequestEvent &e)
 
 void WindowManager::setkeys()
 {
+  const int totalKeys = 1;
+  char keyBindings[totalKeys][2] = {'D'};
 	for (int i = 0; i < totalKeys; i++)
 	{
 		MOD1BIND(keyBindings[i]);
@@ -90,9 +100,8 @@ void WindowManager::setbuttons()
 	XGrabButton(display_, 1, Mod1Mask, root_, True, ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
 }
 
-void WindowManager::handle_events(const XEvent &e)
+void WindowManager::handle_events(XEvent &e)
 {
-  std::cout << "event detected";
   switch (e.type)
   {
 	case CreateNotify:
