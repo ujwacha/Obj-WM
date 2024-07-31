@@ -215,8 +215,6 @@ int WindowManager::manage_centered_master()
   {
 	current_windows[i].plot_window(display_);
   }
-  XSetInputFocus(display_, focused.get_window(), RevertToParent, CurrentTime);
-  XRaiseWindow(display_, focused.get_window());
   return 0;
 }
 
@@ -273,8 +271,6 @@ int WindowManager::manage_master_stack()
 
   std::cout << "[FOCUSED] : " << focused.get_window() << std::endl;
 
-  XSetInputFocus(display_, focused.get_window(), RevertToParent, CurrentTime);
-  XRaiseWindow(display_, focused.get_window());
   return 0;
 }
 
@@ -319,8 +315,6 @@ int WindowManager::manage_tree()
   {
 	current_windows[i].plot_window(display_);
   }
-  XSetInputFocus(display_, focused.get_window(), RevertToParent, CurrentTime);
-  XRaiseWindow(display_, focused.get_window());
   return 0;
 }
 

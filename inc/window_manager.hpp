@@ -71,6 +71,7 @@ private:
   void decrease_height();
   unsigned int swidth;
   unsigned int sheight;
+  bool enable_moouse = false;
 
 
   std::chrono::steady_clock::time_point last_call_time_ = std::chrono::steady_clock::now() - std::chrono::milliseconds(100);

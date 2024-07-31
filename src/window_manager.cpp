@@ -210,9 +210,14 @@ void WindowManager::keypress(XKeyEvent &e) {
     } else if (isKey("Y")) {
       win_to_prev_workspace();
     }
-
     else if (isKey("T")) {
       win_to_next_workspace();
+    }
+
+    else if (isKey("W")) {
+	  if(enable_moouse == true) enable_moouse = false;
+	  else enable_moouse = true;
+	  printf("enable_moouse = %02x\n",enable_moouse);
     }
   }
 
@@ -243,6 +248,7 @@ void WindowManager::setkeys() {
 
   MOD1BIND("T");
   MOD1BIND("Y");
+  MOD1BIND("W");
 
   SHIFTBIND("H");
   SHIFTBIND("L");
@@ -384,14 +390,16 @@ int WindowManager::on_enter_notify(XCrossingEvent &e) {
 
 
 int WindowManager::on_motion_notify(XMotionEvent &e) {
-  // if (e.subwindow != None && e.subwindow != focused.get_window())
-  //   {
-  //     Window temp = focused.get_window();
-  //     printf("focusing\n");
-  //     focused = e.subwindow;
-  //     // manage(working_tag);
-  // }
-
+  if(e.subwindow == None && e.subwindow == focused.get_window()) return -1;
+  if(enable_moouse == false) return -1;
+  std::vector<WindowClass>&windows = workspaces.get_all_current_windows();
+  for(int i=0;i<windows.size();i++)
+  {
+	if (e.subwindow == windows[i].get_window()) {
+	  workspaces.focus_window(windows[i]);
+	}
+  }
+  manage();
   return 0;
 };
 
@@ -418,10 +426,11 @@ void WindowManager::handle_events(XEvent &e) {
     keypress(e.xkey);
     break;
   case MotionNotify:
+	on_motion_notify(e.xmotion);
     break;
   case EnterNotify:
-    std::cout << "************************** Entered A Window ***********\n\n\n"
-              << std::endl;
+    //std::cout << "************************** Entered A Window ***********\n\n\n"
+              //<< std::endl;
     // on_enter_notify(e.xcrossing);
     break;
   }
@@ -441,7 +450,7 @@ void WindowManager::Run() {
   XSetErrorHandler(&WindowManager::on_wm_detected);
   XSelectInput(display_, root_,
                SubstructureRedirectMask | SubstructureNotifyMask |
-                   EnterWindowMask | MotionNotify);
+                   EnterWindowMask | MotionNotify | PointerMotionMask);
 
   XSync(display_, false);
   setkeys();
