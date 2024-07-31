@@ -32,6 +32,10 @@ private:
   void handle_events(XEvent &e);
   void kill_window(WindowClass &w);
   int manage();
+  int on_configure_request(XConfigureRequestEvent &e);
+  int on_create_notify(XCreateWindowEvent &e);
+  int on_destroy_notify(XDestroyWindowEvent &e);
+
   Display* display_;
   const Window root_;
   Workspaces workspaces;

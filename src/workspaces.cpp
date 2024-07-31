@@ -47,6 +47,9 @@ int Workspaces::remove_window(WindowClass window, int space) {
       // but i did this to make it just work for now
       working_windows[i] = working_windows[working_windows.size() - 1];
       working_windows.pop_back();
+
+      std::cout << "******************REMOVEDDDDDDDDDDD****************" << std::endl;
+
     }
   }
   
@@ -110,18 +113,20 @@ int Workspaces::remove_all_window(WindowClass window) {
 }
 
 int Workspaces::add_window(WindowClass window, int space) {
-  std::cout << "add window called\n";
-  std::cout << "after the value of space is changed";
+  std::cout << "add window called here \n";
   if (space < 0) {
     space = current;
   }
-  std::cout << "after the value of space is changed";
+
+  std::cout << "space : " << space << std::endl;
+  std::cout << "workspace_size: " << workspac_[space].size()<< std::endl;
+
 
   bool already = false;
 
   for (int i = 0; i < workspac_[space].size(); i++) 
   {
-    if (workspac_[space][i] == window) return -1;
+    if (workspac_[space][i] == window) throw -1;
   }
 
   workspac_[space].push_back(window);

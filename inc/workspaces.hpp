@@ -4,6 +4,10 @@
 class Workspaces {
 public:
 
+  Workspaces() {
+    workspac_.push_back(std::vector<WindowClass>()); // add the first workspace
+  }
+  
   int change_workspace(int nuber);
   std::vector<WindowClass>& get_all_current_windows();
   int remove_window(WindowClass window, int space=-1);

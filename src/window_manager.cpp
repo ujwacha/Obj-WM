@@ -2,6 +2,7 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <algorithm>
+#include <bits/types/wint_t.h>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
@@ -53,7 +54,7 @@ int WindowManager::on_x_err(Display* display, XErrorEvent* event) {
 
 void WindowManager::kill_window(WindowClass &w)
 {
-  XDestroyWindow(display_, *w.get_window());
+  XDestroyWindow(display_, w.get_window());
 }
 
 void WindowManager::keypress(XKeyEvent &e)
@@ -87,24 +88,40 @@ void WindowManager::frame(WindowClass &w)
 void WindowManager::on_map_request(XMapRequestEvent &e)
 {
 
-  focused = WindowClass(&e.window);
+  focused = WindowClass(e.window);
   if(e.parent ==  root_)
   {
-    workspaces.add_window(focused);
+
+    try {
+      workspaces.add_window(focused);
+    } catch (int a) {
+      std::cout << "[ERROR] on on_map_request, add window throws " << a << std::endl;
+    }
+  };
+
+  try {
+    manage();
+  } catch (const char* a) {
+    std::cout << "[ERROR] manage(): " << a << std::endl;
   }
 
 }
 
 int WindowManager::manage()
 {
+  std::cout << "On manage function" << std::endl;
+
   std::vector<WindowClass>& current_windows = workspaces.get_all_current_windows();
 
 
   for(int i=0;i<current_windows.size();i++)
   {
-	Window *w = current_windows[i].get_window();
-	XMoveResizeWindow(display_, *w, swidth*i/2, sheight*i/2, swidth/2, sheight/2);
-	XMapWindow(display_, *w);
+	Window w = current_windows[i].get_window();
+
+	if (w == 0) throw "Null detected, stopping to manage";
+
+	XMoveResizeWindow(display_, w, swidth*i/2, sheight*i/2, swidth/2, sheight/2);
+	XMapWindow(display_, w);
   }
 
   return 0;
@@ -116,36 +133,97 @@ void WindowManager::setbuttons()
 	XGrabButton(display_, 1, Mod1Mask, root_, True, ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
 }
 
+int WindowManager::on_configure_request(XConfigureRequestEvent &e) {
+
+  XWindowChanges ch;
+  ch.border_width = e.border_width;
+  ch.width = e.width;
+  ch.height = e.height;
+  ch.x = e.x;
+  ch.y = e.y;
+  ch.sibling = e.above;
+  ch.stack_mode = e.detail;
+
+  XConfigureWindow(display_, e.window, e.value_mask, &ch);
+
+  return 0;
+}
+
+
+
+int WindowManager::on_create_notify(XCreateWindowEvent &e) {
+
+
+  focused = WindowClass(e.window);
+  if(e.parent ==  root_)
+  {
+
+    try {
+      workspaces.add_window(focused);
+    } catch (int a) {
+      std::cout << "[ERROR] on on_create_notify(), add window throws " << a << std::endl;
+    }
+
+    
+
+  };
+
+  XMapWindow(display_, focused.get_window());
+
+  return 0;
+
+}
+
+
+int WindowManager::on_destroy_notify(XDestroyWindowEvent &e) {
+
+  workspaces.remove_all_window(WindowClass(e.window));
+
+
+  return 0;
+}
+
 void WindowManager::handle_events(XEvent &e)
 {
-  std::cout << "event handler called\n";
   switch (e.type)
   {
 	case CreateNotify:
+	  std::cout << "createnotify" << std::endl;
+	  this->on_create_notify(e.xcreatewindow);
 	  break;
 	case ConfigureRequest:
+	  std::cout << "configurerequest" << std::endl;
+	  this->on_configure_request(e.xconfigurerequest);
 	  break;
 	case MapRequest:
+	  std::cout << "maprequest" << std::endl;
 	  on_map_request(e.xmaprequest);
 	  break;
 	case DestroyNotify:
+	  std::cout << "destroynotify" << std::endl;
+	  on_destroy_notify(e.xdestroywindow);
 	  break;
 	case KeyPress:
-	  std::cout << "keypress request seen";
+	  std::cout << "keypress";
 	  keypress(e.xkey);
 	  break;
 	case FocusIn:
-	  printf("focusin event just came, 0x%lx gained focus \n\n\n", e.xfocus.window);
+	  std::cout << "[FOCUSIN] event just came," <<  e.xfocus.window << "gained focus" << std::endl;
 	  break;
 	case FocusOut:
-	  printf("focusout event just came, 0x%lx gained focus \n\n\n", e.xfocus.window);
+	  std::cout << "[FOCUSOUT] event just came," <<  e.xfocus.window << "gained focus" << std::endl;
 	  break;
 	case MotionNotify:
+	  std::cout << "Motionnotify" << std::endl;
 	case ButtonPress:
+	  std::cout << "buttonpress" << std::endl;
 	  break;
 	case ButtonRelease:
+	  std::cout << "buttonrelease" << std::endl;
 	  break;
   }
+
+  XSync(display_, false);
 }
 
 
