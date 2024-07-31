@@ -81,10 +81,10 @@ void WindowManager::keypress(XKeyEvent &e)
 	} else if (isKey("O")) {
 	  std::cout << "Terminal\n";
 	}
-	else if (isKey("=")) {
+	else if (isKey("E")) {
 	  increase_size();
 	}
-	else if (isKey("-")) {
+	else if (isKey("R")) {
 	  decrease_size();	
 	}
 
@@ -97,8 +97,8 @@ void WindowManager::setkeys()
   MOD1BIND("Q");
   MOD1BIND("M");
   MOD1BIND("O");
-  MOD1BIND("=");
-  MOD1BIND("-");
+  MOD1BIND("E");
+  MOD1BIND("R");
 
 }
 
