@@ -38,6 +38,9 @@ public:
     std::cout << "[WINDOW] : " << (long int) this_win_ << std::endl;
   };
 
+  bool is_focused()
+  {return focused;}
+
   void focus(){
     std::cout << "[FOCUSED focus()]: " << this_win_ << std::endl;
     focused = true;

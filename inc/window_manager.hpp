@@ -46,6 +46,8 @@ private:
   Workspaces workspaces;
   WindowClass focused;
   WindowClass prev_focused;
+  void increase_size();
+  void decrease_size();
   unsigned int swidth;
   unsigned int sheight;
 };

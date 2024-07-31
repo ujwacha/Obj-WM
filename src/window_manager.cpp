@@ -81,6 +81,12 @@ void WindowManager::keypress(XKeyEvent &e)
 	} else if (isKey("O")) {
 	  std::cout << "Terminal\n";
 	}
+	else if (isKey("=")) {
+	  increase_size();
+	}
+	else if (isKey("-")) {
+	  decrease_size();	
+	}
 
   }
 }
@@ -91,6 +97,8 @@ void WindowManager::setkeys()
   MOD1BIND("Q");
   MOD1BIND("M");
   MOD1BIND("O");
+  MOD1BIND("=");
+  MOD1BIND("-");
 
 }
 
