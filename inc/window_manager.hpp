@@ -31,11 +31,11 @@ private:
   void setbuttons();
   void handle_events(XEvent &e);
   void kill_window(Window &w);
+  void manage();
 
 
   Display* display_;
   const Window root_;
   Workspaces workspaces;
-  Window focused;
 };
 

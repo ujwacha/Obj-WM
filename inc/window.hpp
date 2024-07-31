@@ -17,17 +17,12 @@ public:
     return this->this_win_ = other.this_win_;
   };
 
-
-
-
   Window* get_window() {
     return this_win_;
   }
   
 private:
   Window* this_win_;
-  
-
 };
 
 

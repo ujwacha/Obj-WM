@@ -1,4 +1,7 @@
 #include "workspaces.hpp"
+#include <X11/Xlib.h>
+#include <cstdio>
+#include <sched.h>
 #include <vector>
 #include <iostream>
 
@@ -25,10 +28,9 @@ int Workspaces::change_workspace(int number) {
 }
 
 
-const std::vector<WindowClass>& Workspaces::get_all_current_windows() {
+std::vector<WindowClass>& Workspaces::get_all_current_windows() {
   return workspac_[current];
 }
-
 
 
 int Workspaces::remove_window(WindowClass window, int space=-1) {
@@ -107,20 +109,23 @@ int Workspaces::remove_all_window(WindowClass window) {
   throw -1;
 }
 
-int Workspaces::add_window(WindowClass window, int space=-1) {
+int Workspaces::add_window(WindowClass window, int space) {
+  std::cout << "add window called\n";
+  std::cout << "after the value of space is changed";
   if (space < 0) {
     space = current;
   }
+  std::cout << "after the value of space is changed";
 
   bool already = false;
 
-  std::vector<WindowClass>& working_windows = workspac_[space];
+  for (int i = 0; i < workspac_[space].size(); i++) 
+  {
+    if (workspac_[space][i] == window) return -1;
+  }
 
-  for (int i = 0; i < working_windows.size(); i++) 
-    if (working_windows[i] == window) return -1;
-
-  working_windows.push_back(window);
-  
+  workspac_[space].push_back(window);
+  std::cout << "pushed the window back\n";
   return 0;
 }
 
@@ -145,5 +150,3 @@ int Workspaces::move_window_to_prev(WindowClass window) {
   }
  
 }
-
-

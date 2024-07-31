@@ -1,16 +1,19 @@
 #include "window_manager.hpp"
 #include <X11/X.h>
 #include <X11/Xlib.h>
+#include <algorithm>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <glog/logging.h>
-#include <iterator>
 #include <memory>
 #include <iostream>
 #include <unistd.h>
+#include <vector>
 
 using ::std::unique_ptr;
+unsigned int swidth;
+unsigned int sheight;
 
 bool WindowManager::wm_detected_ = false;
 
@@ -59,7 +62,7 @@ void WindowManager::keypress(XKeyEvent &e)
   {
 	if(isKey("D"))
 	{
-	  std::cout << "starting up dmenu";
+	  std::cout << "starting up dmenu\n";
 	  system("dmenu_run&");
 	}
 	else if (isKey("Q"))
@@ -85,12 +88,22 @@ void WindowManager::on_map_request(XMapRequestEvent &e)
 {
   if(e.parent ==  root_)
   {
-	frame(e.window);
-	XMapWindow(display_, e.window);
+	WindowClass w = &e.window;
+	workspaces.add_window(w);
   }
-  focused = e.window; 
+  manage();
 }
 
+void WindowManager::manage()
+{
+  std::vector<WindowClass>& current_windows = workspaces.get_all_current_windows();
+  for(int i=0;i<current_windows.size();i++)
+  {
+	Window *w = current_windows[i].get_window();
+	XMoveResizeWindow(display_, *w, swidth*i/2, sheight*i/2, swidth/2, sheight/2);
+	XMapWindow(display_, *w);
+  }
+}
 
 // Adds mousebutton listeners
 void WindowManager::setbuttons()
@@ -100,6 +113,7 @@ void WindowManager::setbuttons()
 
 void WindowManager::handle_events(XEvent &e)
 {
+  std::cout << "event handler called\n";
   switch (e.type)
   {
 	case CreateNotify:
@@ -112,7 +126,7 @@ void WindowManager::handle_events(XEvent &e)
 	case DestroyNotify:
 	  break;
 	case KeyPress:
-	  LOG(INFO)<<"key pressed";
+	  std::cout << "keypress request seen";
 	  keypress(e.xkey);
 	  break;
 	case FocusIn:
@@ -132,6 +146,10 @@ void WindowManager::handle_events(XEvent &e)
 
 void WindowManager::Run() {
   std::cout << "Running\n";
+  Screen *scr;
+  scr = DefaultScreenOfDisplay(display_);
+  sheight = scr->height;
+  swidth = scr->width;
 
   wm_detected_ = false;
 
