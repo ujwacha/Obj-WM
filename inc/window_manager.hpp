@@ -39,7 +39,7 @@ private:
   int manage_tree();
   int manage_centered_master();
   int focus_next();
-  //  int focus_prev();
+  int focus_prev();
 
   Display* display_;
   const Window root_;

@@ -35,6 +35,32 @@ WindowManager::WindowManager(Display *display)
   }
 
 
+int WindowManager::focus_prev() {
+  prev_focused = focused;
+
+  int ind;
+
+  std::vector<WindowClass> work = workspaces.get_all_current_windows();
+
+  for (int i=0 ; i < work.size(); i++) {
+    if (work[i] == focused) {
+      ind = i;
+      break;
+    }
+  }
+
+  int new_index = (ind - 1 < 0) ? work.size() - 1 : ind - 1 ; 
+
+  auto new_focus = work[new_index];
+  
+  workspaces.focus_window(new_focus);
+
+  focused = new_focus;
+
+  manage();
+  return 0;
+}
+
 int WindowManager::focus_next() {
   prev_focused = focused;
 
@@ -108,6 +134,8 @@ void WindowManager::keypress(XKeyEvent &e)
 	  decrease_size();	
 	} else if (isKey("L")) {
 	  focus_next();
+	} else if (isKey("H")) {
+	  focus_prev();
 	}
   }
 }
@@ -121,6 +149,7 @@ void WindowManager::setkeys()
   MOD1BIND("J");
   MOD1BIND("K");
   MOD1BIND("L");
+  MOD1BIND("H");
 
 
 }
