@@ -53,17 +53,23 @@ int WindowClass::setborder(Display* display)
   XColor border_color_b, exactColor_b;
   Status another_status = XAllocNamedColor(display, cmap, "blue", &border_color_b, &exactColor_b);
 
-  if (this_win_ == focused)
+  if (focused)
   {
-    XSetWindowBorder(display, this_win_, border_color_b.pixel);
-    // Set the window border color for focused
+    std::cout << "[FOCUSED<Border>]: " << this_win_ << std::endl;
+    std::cout << "Setting the border color to red: " << this_win_ << std::endl;
+    XSetWindowBorder(display, this_win_, border_color_r.pixel);
+    XSetInputFocus(display, focused, RevertToParent, CurrentTime);
+    XRaiseWindow(display, focused);
+    XSetWindowBorderWidth(display, this_win_, border_pixel);
+    return 0;
   }
   else
   {
-    XSetWindowBorder(display, this_win_, border_color_r.pixel);
-    // Set the window border color unfocused
+    std::cout << "[Unfocused<Border>]: " << this_win_ << std::endl;
+    std::cout << "Setting the border color to blue: " << this_win_ << std::endl;
+    XSetWindowBorder(display, this_win_, border_color_b.pixel);
+    XSetWindowBorderWidth(display, this_win_, border_pixel);
+    return 1;
   }
 
-  XSetWindowBorderWidth(display, this_win_, border_pixel);
-  return 0;
 }

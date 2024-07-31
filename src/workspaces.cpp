@@ -1,6 +1,7 @@
 #include "workspaces.hpp"
 #include <X11/Xlib.h>
 #include <cstdio>
+#include <ostream>
 #include <sched.h>
 #include <vector>
 #include <iostream>
@@ -176,4 +177,23 @@ layout Workspaces::get_current_layout()
 void Workspaces::set_current_layout(layout l)
 {
   layout_[current] = l;
+}
+
+int Workspaces::focus_window(WindowClass w) {
+  std::vector<WindowClass> work = this->get_all_current_windows();
+
+  for (int i = 0; i < work.size(); i++) {
+    if (w == work[i]) {
+      std::cout << "Focusing Window: " << work[i].get_window() << std::endl;
+      work[i].focus();
+    }
+    else {
+      std::cout << "UN-Focusing Window: " << work[i].get_window() << std::endl;
+      work[i].unfocus();
+    }
+  }
+
+  
+  
+  return 0;
 }

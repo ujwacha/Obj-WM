@@ -39,10 +39,12 @@ public:
   };
 
   void focus(){
+    std::cout << "[FOCUSED focus()]: " << this_win_ << std::endl;
     focused = true;
   };
 
   void unfocus(){
+    std::cout << "[UN-FOCUSED unfocus()]: " << this_win_ << std::endl;
     focused = false;
   };
 

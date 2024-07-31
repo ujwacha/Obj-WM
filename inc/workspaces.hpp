@@ -27,6 +27,7 @@ public:
   layout get_current_layout();
   void set_current_layout(layout l);
   int total_windows(int workspace_no);
+  int focus_window(WindowClass w);
 
 private:
   std::vector<std::vector<WindowClass>> workspac_;

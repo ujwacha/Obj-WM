@@ -50,5 +50,18 @@
     "directory": "/home/light/Obj-WM/build",
     "file": "/home/light/Obj-WM/src/workspaces.cpp",
     "output": "/home/light/Obj-WM/build/CMakeFiles/ObjWM.dir/src/workspaces.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-I/home/light/Obj-WM/inc",
+      "-c",
+      "-o",
+      "CMakeFiles/ObjWM.dir/src/manager.cpp.o",
+      "/home/light/Obj-WM/src/manager.cpp"
+    ],
+    "directory": "/home/light/Obj-WM/build",
+    "file": "/home/light/Obj-WM/src/manager.cpp",
+    "output": "/home/light/Obj-WM/build/CMakeFiles/ObjWM.dir/src/manager.cpp.o"
   }
 ]

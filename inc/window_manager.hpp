@@ -43,5 +43,9 @@ private:
   const Window root_;
   Workspaces workspaces;
   WindowClass focused;
+  unsigned int swidth;
+  unsigned int sheight;
+
+
 };
 

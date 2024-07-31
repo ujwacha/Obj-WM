@@ -18,6 +18,7 @@ add_executable(ObjWM
   src/window_manager.cpp
   src/window.cpp
   src/workspaces.cpp
+  src/manager.cpp
   )
 
 target_link_libraries(ObjWM
