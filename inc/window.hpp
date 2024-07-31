@@ -1,6 +1,15 @@
 
 #include <X11/X.h>
+#include <X11/Xlib.h>
 #include <iostream>
+
+typedef struct
+{
+  int xpos;
+  int ypos;
+  int width;
+  int height;
+} dimension;
 
 class WindowClass {
 public:
@@ -20,9 +29,10 @@ public:
   Window get_window() {
     return this_win_;
   }
+  
+  dimension dim;
 
-
-  int plot_window();
+  void plot_window(Display* display_);
 
   void display() {
     std::cout << "[WINDOW] : " << (long int) this_win_ << std::endl;
@@ -30,6 +40,7 @@ public:
 
 private:
   Window this_win_;
+  int setborder();
 };
 
 

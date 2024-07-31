@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#define default_layout master_stack
+
 int Workspaces::total_workspaces() { return workspac_.size();}
 
 int Workspaces::total_windows(int workspace_no) {
@@ -20,6 +22,7 @@ int Workspaces::change_workspace(int number) {
   else if (number == this->total_workspaces())
     {
       workspac_.push_back(std::vector<WindowClass>());
+	  layout_.push_back(default_layout);
       current = number;
     }
   else if (number > this->total_workspaces())
@@ -162,4 +165,14 @@ int Workspaces::move_window_to_prev(WindowClass window) {
     return -1;
   }
  
+}
+
+layout Workspaces::get_current_layout()
+{
+  return layout_[current];
+}
+
+void Workspaces::set_current_layout(layout l)
+{
+  layout_[current] = l;
 }

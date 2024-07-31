@@ -1,6 +1,12 @@
 #include <vector>
 #include "window.hpp"
 
+enum layout
+{
+  master_stack,
+  tree,
+  centered_master
+};
 class Workspaces {
 public:
 
@@ -17,12 +23,15 @@ public:
   int move_back(WindowClass window);
   int move_window_to_next(WindowClass window);
   int move_window_to_prev(WindowClass window);
+  layout get_current_layout();
+  void set_current_layout(layout l);
+  int total_windows(int workspace_no);
 
 private:
   std::vector<std::vector<WindowClass>> workspac_;
+  std::vector<layout> layout_;
   int current = 0;
 
   int total_workspaces();
-  int total_windows(int workspace_no);
 
 };
