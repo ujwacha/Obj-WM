@@ -16,10 +16,12 @@ void WindowManager::increase_size()
 	  {
 		if(i==0)
 		{
-		  master += 0.05f;
+		  if(master >= 0.8) return;
+		  master += 0.005f;
 		}
 		else if (i>0) {
-		  master -= 0.05f;		
+		  if(master <= 0.2) return;
+		  master -= 0.005f;		
 		}
 	  }
 	}
@@ -32,22 +34,25 @@ void WindowManager::increase_size()
 	  {
 		if(i==0)
 		{
-		  master += 0.05f;
-		  odd -= 0.025f;
-		  even -= 0.025f;
+		  if(master >= 0.8) return;
+		  master += 0.005f;
+		  odd -= 0.0025f;
+		  even -= 0.0025f;
 		}
 
 		else if (i%2==0) {
-		  master -= 0.025;
-		  odd -= 0.025;
-		  even += 0.05;
+		  if(master <= 0.2) return;
+		  master -= 0.0025;
+		  odd -= 0.0025;
+		  even += 0.005;
 		}
 
 		else if(i%2 !=0)
 		{
-		  master -= 0.025;
-		  odd += 0.05;
-		  even -= 0.025;
+		  if(master <= 0.2) return;
+		  master -= 0.0025;
+		  odd += 0.005;
+		  even -= 0.0025;
 		}
 	  }
 
@@ -68,10 +73,12 @@ void WindowManager::decrease_size()
 	  {
 		if(i==0)
 		{
-		  master -= 0.05f;
+		  if(master <= 0.2) return;
+		  master -= 0.005f;
 		}
 		else if (i>0) {
-		  master += 0.05f;		
+		  if(master >= 0.8) return;
+		  master += 0.005f;		
 		}
 	  }
 	}
@@ -84,22 +91,25 @@ void WindowManager::decrease_size()
 	  {
 		if(i==0)
 		{
-		  master -= 0.05f;
-		  odd += 0.025f;
-		  even += 0.025f;
+		  if(master <= 0.2) return;
+		  master -= 0.005f;
+		  odd += 0.0025f;
+		  even += 0.0025f;
 		}
 
 		else if (i%2==0) {
-		  master += 0.025;
-		  odd += 0.025;
-		  even -= 0.05;
+		  if(master >= 0.8) return;
+		  master += 0.0025;
+		  odd += 0.0025;
+		  even -= 0.005;
 		}
 
 		else if(i%2 !=0)
 		{
-		  master += 0.025;
-		  odd -= 0.05;
-		  even += 0.025;
+		  if(master >= 0.8) return;
+		  master += 0.0025;
+		  odd -= 0.005;
+		  even += 0.0025;
 		}
 	  }
 
