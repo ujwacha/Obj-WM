@@ -33,13 +33,8 @@ std::vector<WindowClass>& Workspaces::get_all_current_windows() {
 }
 
 
-<<<<<<< HEAD
 
 int Workspaces::remove_window(WindowClass window, int space) {
-=======
-int Workspaces::remove_window(WindowClass window, int space=-1) {
->>>>>>> origin/main
-
   if (space < 0) {
     space = current;
   }
@@ -115,11 +110,8 @@ int Workspaces::remove_all_window(WindowClass window) {
 }
 
 int Workspaces::add_window(WindowClass window, int space) {
-<<<<<<< HEAD
-=======
   std::cout << "add window called\n";
   std::cout << "after the value of space is changed";
->>>>>>> origin/main
   if (space < 0) {
     space = current;
   }
@@ -134,6 +126,10 @@ int Workspaces::add_window(WindowClass window, int space) {
 
   workspac_[space].push_back(window);
   std::cout << "pushed the window back\n";
+
+
+  for (int i = 0; i < workspac_[space].size(); i++) 
+    workspac_[space][i].display();
   return 0;
 }
 

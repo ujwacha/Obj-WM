@@ -51,9 +51,9 @@ int WindowManager::on_x_err(Display* display, XErrorEvent* event) {
   return -1;
 }
 
-void WindowManager::kill_window(Window &w)
+void WindowManager::kill_window(WindowClass &w)
 {
-  XDestroyWindow(display_, w);
+  XDestroyWindow(display_, *w.get_window());
 }
 
 void WindowManager::keypress(XKeyEvent &e)
@@ -79,7 +79,7 @@ void WindowManager::setkeys()
   MOD1BIND("Q");
 }
 
-void WindowManager::frame(Window &w)
+void WindowManager::frame(WindowClass &w)
 {
   return;
 }
@@ -90,29 +90,24 @@ void WindowManager::on_map_request(XMapRequestEvent &e)
   focused = WindowClass(&e.window);
   if(e.parent ==  root_)
   {
-<<<<<<< HEAD
     workspaces.add_window(focused);
   }
 
-
-
-=======
-	WindowClass w = &e.window;
-	workspaces.add_window(w);
-  }
-  manage();
->>>>>>> origin/main
 }
 
-void WindowManager::manage()
+int WindowManager::manage()
 {
   std::vector<WindowClass>& current_windows = workspaces.get_all_current_windows();
+
+
   for(int i=0;i<current_windows.size();i++)
   {
 	Window *w = current_windows[i].get_window();
 	XMoveResizeWindow(display_, *w, swidth*i/2, sheight*i/2, swidth/2, sheight/2);
 	XMapWindow(display_, *w);
   }
+
+  return 0;
 }
 
 // Adds mousebutton listeners

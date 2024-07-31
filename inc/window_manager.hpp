@@ -30,21 +30,11 @@ private:
   void setkeys();
   void setbuttons();
   void handle_events(XEvent &e);
-<<<<<<< HEAD
   void kill_window(WindowClass &w);
   int manage();
-=======
-  void kill_window(Window &w);
-  void manage();
-
->>>>>>> origin/main
-
   Display* display_;
   const Window root_;
   Workspaces workspaces;
-<<<<<<< HEAD
   WindowClass focused;
-=======
->>>>>>> origin/main
 };
 
