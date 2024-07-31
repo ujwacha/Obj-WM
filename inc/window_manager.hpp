@@ -36,6 +36,8 @@ private:
   int on_configure_request(XConfigureRequestEvent &e);
   int on_create_notify(XCreateWindowEvent &e);
   int on_destroy_notify(XDestroyWindowEvent &e);
+  int on_enter_notify(XCrossingEvent &e);
+  int on_motion_notify(XMotionEvent &e);
   int manage_master_stack();
   int manage_tree();
   int manage_centered_master();
