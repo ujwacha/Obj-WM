@@ -137,7 +137,7 @@ int Workspaces::add_window(WindowClass window, int space) {
 
   for (int i = 0; i < workspac_[space].size(); i++) 
   {
-    if (workspac_[space][i] == window) throw -1;
+    if (workspac_[space][i] == window) return -1;
   }
 
   workspac_[space].push_back(window);
@@ -152,6 +152,7 @@ int Workspaces::add_window(WindowClass window, int space) {
 int Workspaces::move_window_to_next(WindowClass window) {
   try {
     change_workspace(current + 1);
+    this->add_window(window);
     return 0;
   } catch (int a) {
     std::cout << "[Error] when movint to next, CODE: "<< a <<"\n";
@@ -163,6 +164,7 @@ int Workspaces::move_window_to_next(WindowClass window) {
 int Workspaces::move_window_to_prev(WindowClass window) {
   try {
     change_workspace(current - 1);
+    this->add_window(window);
     return 0;
   } catch (int a) {
     std::cout << "[Error] when movint to next, CODE: "<< a <<"\n";

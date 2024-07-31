@@ -158,7 +158,29 @@ int WindowManager::prev_workspace() {
   return 0;
 }
 
+int WindowManager::win_to_next_workspace() {
+  unmap_all();
+  XSync(display_, false);
 
+  workspaces.move_window_to_next(focused);
+  
+  manage();
+  return 0;
+
+}
+
+int WindowManager::win_to_prev_workspace() {
+
+  unmap_all();
+  XSync(display_, false);
+
+  workspaces.move_window_to_prev(focused);
+  
+  manage();
+
+  return 0;
+}
+  
 
 void WindowManager::keypress(XKeyEvent &e)
 {
@@ -204,6 +226,14 @@ void WindowManager::keypress(XKeyEvent &e)
 	else if (isKey("U")) {
 	  decrease_height();
 	}
+	else if (isKey("Y")) {
+	  win_to_prev_workspace();
+	}
+
+	else if (isKey("T")) {
+	  win_to_next_workspace();
+	}
+
 
   }
 
@@ -234,6 +264,8 @@ void WindowManager::setkeys()
   MOD1BIND("I");
   MOD1BIND("U");
 
+  MOD1BIND("T");
+  MOD1BIND("Y");
 
   SHIFTBIND("H");
   SHIFTBIND("L");

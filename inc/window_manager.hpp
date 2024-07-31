@@ -46,7 +46,9 @@ private:
   int unmap_all();
   int next_workspace();
   int prev_workspace();
-
+  int win_to_next_workspace();
+  int win_to_prev_workspace();
+  
 
   Display* display_;
   const Window root_;
