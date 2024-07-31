@@ -39,5 +39,4 @@ private:
   int current = 0;
 
   int total_workspaces();
-
 };

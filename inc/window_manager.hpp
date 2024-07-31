@@ -6,6 +6,8 @@ extern "C" {
 #include "memory"
 #include "workspaces.hpp"
 
+#include <chrono>
+
 #define isKey(K) e.keycode == XKeysymToKeycode(display_, XStringToKeysym(K))
 #define MOD1BIND(K) XGrabKey(display_, XKeysymToKeycode(display_, XStringToKeysym(K)), Mod1Mask, root_, True, GrabModeAsync, GrabModeAsync)
 #define SHIFTBIND(K) XGrabKey(display_, XKeysymToKeycode(display_, XStringToKeysym(K)), ShiftMask, root_, True, GrabModeAsync, GrabModeAsync)
@@ -21,6 +23,12 @@ public:
   void Run();
 
   static bool wm_detected_ ;
+
+  Window barwin;
+  Window runbar();
+  void updatebar();
+  
+
 private:
   WindowManager(Display* display);
   static int on_x_err(Display* display, XErrorEvent* e);
@@ -63,5 +71,8 @@ private:
   void decrease_height();
   unsigned int swidth;
   unsigned int sheight;
+
+
+  std::chrono::steady_clock::time_point last_call_time_ = std::chrono::steady_clock::now() - std::chrono::milliseconds(100);
 };
 

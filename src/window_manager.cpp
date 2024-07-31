@@ -14,6 +14,8 @@
 #include <ostream>
 #include <unistd.h>
 #include <vector>
+#include <X11/Xutil.h>
+#include <pthread.h>
 
 using ::std::unique_ptr;
 bool WindowManager::wm_detected_ = false;
@@ -439,12 +441,14 @@ void WindowManager::Run() {
   XSetErrorHandler(&WindowManager::on_wm_detected);
   XSelectInput(display_, root_,
                SubstructureRedirectMask | SubstructureNotifyMask |
-                   EnterWindowMask );
+                   EnterWindowMask | MotionNotify);
 
   XSync(display_, false);
   setkeys();
   setbuttons();
 
+
+  
   if (wm_detected_) {
     LOG(ERROR) << "[Error] Another WM detected " << XDisplayString(display_);
 
@@ -454,9 +458,67 @@ void WindowManager::Run() {
   XSetErrorHandler(&WindowManager::on_x_err);
   XEvent e;
 
+
+  barwin = runbar();
+
   for (;;) {
     XNextEvent(display_, &e);
     handle_events(e);
     XSync(display_, false);
+    updatebar();
   }
+}
+
+Window WindowManager::runbar() {
+  Display *dpy = display_;
+  Screen *scr = DefaultScreenOfDisplay(dpy);
+  Window root = root_;
+  int win_height = 15 - 3;
+  XEvent e;
+
+  Window win = XCreateSimpleWindow(dpy, root, 0, 0, scr->width, win_height, 1,
+                                   BlackPixel(dpy, DefaultScreen(dpy)),
+                                   WhitePixel(dpy, DefaultScreen(dpy)));
+
+  XMoveWindow(dpy, win, 0, scr->height - win_height);
+
+  XMapWindow(dpy, win);
+  return win;
+}
+
+
+void  WindowManager::updatebar() {
+  static FILE *fp;
+  static char buffer[1024];
+  static char tempbu[1024];
+
+  Display * display = display_;
+
+  auto now = std::chrono::steady_clock::now();
+  auto duration_since_last_call = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->last_call_time_);
+  
+  // Return if the function was called within the last 100 milliseconds
+  if (duration_since_last_call.count() < 100) {
+    return;
+  }
+  
+  
+  fp = fopen("/tmp/objwm_title", "r");
+  if (fp == NULL)
+    {
+      return; // if the file does not exist, do nothing
+    }
+  fgets(tempbu, 1000, fp);
+  //    printf("temp: %s\nbuf:%s\n", tempbu, buffer );
+  if (strcmp(tempbu, buffer))
+    {
+      strcpy(buffer, tempbu);
+      XClearWindow(display, barwin);
+    }
+  
+  XDrawString(display, barwin,
+	      DefaultGC(display, DefaultScreen(display)),
+	      10, 10, buffer, strlen(buffer));
+  
+  fclose(fp);
 }
