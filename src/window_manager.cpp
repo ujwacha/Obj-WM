@@ -401,7 +401,7 @@ void WindowManager::Run() {
   std::cout << "Running\n";
   Screen *scr;
   scr = DefaultScreenOfDisplay(display_);
-  sheight = scr->height;
+  sheight = scr->height - 20;
   swidth = scr->width;
 
   wm_detected_ = false;
