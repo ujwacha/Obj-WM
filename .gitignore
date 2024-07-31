@@ -16,7 +16,7 @@
 /src/workspaces.cpp~
 /compile_commands.json
 compile_commands.json
-/.cache
+/.cache/
 /.CMakeLists.txt.~undo-tree~
 compile_commands.json
 /.run.sh.~undo-tree~
