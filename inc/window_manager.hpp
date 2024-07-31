@@ -45,7 +45,5 @@ private:
   WindowClass focused;
   unsigned int swidth;
   unsigned int sheight;
-
-
 };
 
