@@ -75,7 +75,6 @@ void WindowManager::keypress(XKeyEvent &e)
 	  manage();
 	} else if (isKey("O")) {
 	  std::cout << "Terminal\n";
-	  system("xterm");
 	}
 
   }
