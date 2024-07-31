@@ -223,6 +223,10 @@ int WindowManager::manage_master_stack()
 	{
 	  current_windows[i].plot_window(display_);
 	}
+
+
+	std::cout << "[FOCUSED] : " << focused.get_window() << std::endl;
+	
 	XSetInputFocus(display_, focused.get_window(), RevertToParent, CurrentTime);
 	XRaiseWindow(display_, focused.get_window());
   return 0;
@@ -277,7 +281,9 @@ current_windows[0].dim.ypos = 0;
 int WindowManager::manage()
 {
   std::cout << "On manage function" << std::endl;
-  std::cout << workspaces.get_current_layout();
+  std::cout << "Layout :" << workspaces.get_current_layout() << std::endl;
+
+  if (workspaces.get_all_current_windows().size() == 0) return -1;
 
   switch (workspaces.get_current_layout()) {
 	case master_stack:
@@ -352,7 +358,8 @@ int WindowManager::on_destroy_notify(XDestroyWindowEvent &e) {
   for (int i = 0; i < th.size(); i++) {
     std::cout << "[Window] : " << th[i].get_window() << std::endl;
   };
-  
+
+  manage();
   return 0;
 }
 
@@ -396,6 +403,7 @@ void WindowManager::handle_events(XEvent &e)
 	  break;
   }
 
+  
   XSync(display_, false);
 }
 

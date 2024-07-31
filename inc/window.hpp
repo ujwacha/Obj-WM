@@ -38,9 +38,18 @@ public:
     std::cout << "[WINDOW] : " << (long int) this_win_ << std::endl;
   };
 
+  void focus(){
+    focused = true;
+  };
+
+  void unfocus(){
+    focused = false;
+  };
+
 private:
   Window this_win_;
-  int setborder();
+  int setborder(Display* display);
+  bool focused = false;
 };
 
 

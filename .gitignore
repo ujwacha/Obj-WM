@@ -19,3 +19,4 @@ compile_commands.json
 /.cache
 /.CMakeLists.txt.~undo-tree~
 compile_commands.json
+/.run.sh.~undo-tree~

@@ -1,10 +1,11 @@
 extern "C" {
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 }
 
 #include <window.hpp>
 
-#define border_pixel 5 
+#define border_pixel 2
 #define swidth 10
 #define sheight 10
 
@@ -36,12 +37,33 @@ void WindowClass::plot_window(Display* display_)
 		winW -= (2 * border_pixel + 5);
 		winH -= (2 * border_pixel + 5);
 
-		setborder();
+		setborder(display_);
 		XMoveResizeWindow(display_, this_win_, xpos, ypos, winW, winH);
 		XMapWindow(display_, this_win_);
 }
 
-int WindowClass::setborder()
+int WindowClass::setborder(Display* display)
 {
+
+  Colormap cmap = DefaultColormap(display, DefaultScreen(display));
+
+  XColor border_color_r, exactColor_r;
+  Status status = XAllocNamedColor(display, cmap, "red", &border_color_r, &exactColor_r);
+
+  XColor border_color_b, exactColor_b;
+  Status another_status = XAllocNamedColor(display, cmap, "blue", &border_color_b, &exactColor_b);
+
+  if (this_win_ == focused)
+  {
+    XSetWindowBorder(display, this_win_, border_color_b.pixel);
+    // Set the window border color for focused
+  }
+  else
+  {
+    XSetWindowBorder(display, this_win_, border_color_r.pixel);
+    // Set the window border color unfocused
+  }
+
+  XSetWindowBorderWidth(display, this_win_, border_pixel);
   return 0;
 }
