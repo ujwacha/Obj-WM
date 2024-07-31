@@ -1,9 +1,47 @@
+#include <exception>
+#include <iostream>
 #include <vector>
 #include <window_manager.hpp>
 
+float master_cm = 0.5;
 float master = 0.6;
-float odd = 0.3;
-float even = 0.3;
+float odd = 0.25;
+float even = 0.25;
+
+void WindowManager::increase_height()
+{
+  std::cout << "height increase function called\n";
+  std::vector<WindowClass>&windows = workspaces.get_all_current_windows();
+  if(windows.size() == 0 || workspaces.get_current_layout() == tree || workspaces.get_current_layout() == centered_master) return;
+  if(windows[0].is_focused()) return;
+
+  for(int i = 1; i<windows.size();i++)
+  {
+	if(windows[i].is_focused())
+	{
+	  windows[i].power += 0.05;
+	}
+  }
+  manage();
+}
+
+void WindowManager::decrease_height()
+{
+  std::cout << "height increase function called\n";
+  std::vector<WindowClass>&windows = workspaces.get_all_current_windows();
+  if(windows.size() == 0 || workspaces.get_current_layout() == tree || workspaces.get_current_layout() == centered_master) return;
+  if(windows[0].is_focused()) return;
+
+  for(int i = 1; i<windows.size();i++)
+  {
+	if(windows[i].is_focused())
+	{
+	  windows[i].power -= 0.05;
+	}
+  }
+  manage();
+}
+
 void WindowManager::increase_size()
 {
   std::vector<WindowClass>current_windows = workspaces.get_all_current_windows();
@@ -34,23 +72,23 @@ void WindowManager::increase_size()
 	  {
 		if(i==0)
 		{
-		  if(master >= 0.8) return;
-		  master += 0.005f;
+		  if(master_cm >= 0.7 || odd<=0.15 || even <=0.15) return;
+		  master_cm += 0.005f;
 		  odd -= 0.0025f;
 		  even -= 0.0025f;
 		}
 
 		else if (i%2==0) {
-		  if(master <= 0.2) return;
-		  master -= 0.0025;
+		  if(master_cm <= 0.3 || even >= 0.55 || odd<= 0.15) return;
+		  master_cm -= 0.0025;
 		  odd -= 0.0025;
 		  even += 0.005;
 		}
 
 		else if(i%2 !=0)
 		{
-		  if(master <= 0.2) return;
-		  master -= 0.0025;
+		  if(master_cm <= 0.3 || even >= 0.15 || odd<= 0.55) return;
+		  master_cm -= 0.0025;
 		  odd += 0.005;
 		  even -= 0.0025;
 		}
@@ -91,23 +129,23 @@ void WindowManager::decrease_size()
 	  {
 		if(i==0)
 		{
-		  if(master <= 0.2) return;
-		  master -= 0.005f;
+		  if(master_cm <= 0.3) return;
+		  master_cm -= 0.005f;
 		  odd += 0.0025f;
 		  even += 0.0025f;
 		}
 
 		else if (i%2==0) {
-		  if(master >= 0.8) return;
-		  master += 0.0025;
+		  if(even <= 0.1) return;
+		  master_cm += 0.0025;
 		  odd += 0.0025;
 		  even -= 0.005;
 		}
 
 		else if(i%2 !=0)
 		{
-		  if(master >= 0.8) return;
-		  master += 0.0025;
+		  if(odd<0.1) return;
+		  master_cm += 0.0025;
 		  odd -= 0.005;
 		  even += 0.0025;
 		}
@@ -137,7 +175,7 @@ int WindowManager::manage_centered_master()
   {
 	current_windows[0].dim.xpos = 0;
 	current_windows[0].dim.ypos = 0;
-	current_windows[0].dim.width = master*swidth;
+	current_windows[0].dim.width = master_cm*swidth;
 	current_windows[0].dim.height = sheight;
 
 	current_windows[1].dim.xpos = current_windows[0].dim.width;
@@ -149,7 +187,7 @@ int WindowManager::manage_centered_master()
   else if(current_windows.size() >2)
   {
 	current_windows[0].dim.height = sheight;
-	current_windows[0].dim.width = swidth*master;
+	current_windows[0].dim.width = swidth*master_cm;
 	current_windows[0].dim.xpos = swidth*even;
 	current_windows[0].dim.ypos = 0;
 
@@ -159,7 +197,7 @@ int WindowManager::manage_centered_master()
 	  {
 		current_windows[i].dim.width = swidth * odd;
 		current_windows[i].dim.height = (sheight) / (current_windows.size() / 2);
-		current_windows[i].dim.xpos = swidth * (even + master);
+		current_windows[i].dim.xpos = swidth * (even + master_cm);
 		current_windows[i].dim.ypos = ((sheight) / (current_windows.size() / 2)) * ((i - 1) / 2);
 	  }
 
@@ -190,6 +228,12 @@ int WindowManager::manage_master_stack()
   for (int i=0;i<current_windows.size();i++){
 	if(current_windows[i] == 0) return -1;
   }
+  float total_power;
+
+  for(int i=1;i<current_windows.size();i++)
+  {
+	total_power += current_windows[i].power;
+  }
 
   unsigned int total_windows_in_this_tag = current_windows.size();
   unsigned int total_stacks_in_this_tag = current_windows.size() - 1;
@@ -211,10 +255,14 @@ int WindowManager::manage_master_stack()
   // set winInfo for stacks
   for (int i = 1; i < current_windows.size(); i++)
   {
-	current_windows[i].dim.height = sheight / total_stacks_in_this_tag;
+	current_windows[i].dim.height = sheight * current_windows[i].power/total_power;
 	current_windows[i].dim.width = swidth * slave;
 	current_windows[i].dim.xpos = swidth * master;
-	current_windows[i].dim.ypos = current_windows[i].dim.height * (i - 1);
+	if(i==1) current_windows[i].dim.ypos = 0;
+	else
+	 {
+	   current_windows[i].dim.ypos = current_windows[i-1].dim.ypos + current_windows[i-1].dim.height;
+	 };
   }
 
   for(int i=0;i<current_windows.size();i++)

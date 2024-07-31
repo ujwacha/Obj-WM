@@ -55,6 +55,8 @@ private:
   WindowClass prev_focused;
   void increase_size();
   void decrease_size();
+  void increase_height();
+  void decrease_height();
   unsigned int swidth;
   unsigned int sheight;
 };

@@ -194,8 +194,15 @@ void WindowManager::keypress(XKeyEvent &e)
 	  front_move();
 	} else if (isKey("A")) {
 	  prev_workspace();
-	} else if (isKey("S")) {
+	}
+	else if (isKey("S")) {
 	  next_workspace();
+	}
+	else if (isKey("I")) {
+	  increase_height();
+	}
+	else if (isKey("U")) {
+	  decrease_height();
 	}
 
   }
@@ -222,9 +229,10 @@ void WindowManager::setkeys()
   MOD1BIND("H");
   MOD1BIND("B");
   MOD1BIND("N");
-
   MOD1BIND("S");
   MOD1BIND("A");
+  MOD1BIND("I");
+  MOD1BIND("U");
 
 
   SHIFTBIND("H");

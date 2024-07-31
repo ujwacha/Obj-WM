@@ -50,6 +50,7 @@ public:
     std::cout << "[UN-FOCUSED unfocus()]: " << this_win_ << std::endl;
     focused = false;
   };
+  float power = 1;
 
 private:
   Window this_win_;
