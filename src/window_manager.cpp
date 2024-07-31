@@ -35,6 +35,11 @@ WindowManager::WindowManager(Display *display)
   }
 
 
+int WindowManager::focus_next() {
+  return 0;
+}
+  
+
 int WindowManager::on_wm_detected(Display *display, XErrorEvent *event) {
   if (static_cast<int>(event->error_code) == BadAccess) {
 	std::cout << "[Error] another WM detected\n" ;
@@ -99,6 +104,7 @@ void WindowManager::on_map_request(XMapRequestEvent &e)
 
   printf("on map request\n");
   focused = WindowClass(e.window);
+  
   if(e.parent ==  root_)
   {
     try {

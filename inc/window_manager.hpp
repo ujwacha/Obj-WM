@@ -38,11 +38,14 @@ private:
   int manage_master_stack();
   int manage_tree();
   int manage_centered_master();
+  int focus_next();
+  //  int focus_prev();
 
   Display* display_;
   const Window root_;
   Workspaces workspaces;
   WindowClass focused;
+  WindowClass prev_focused;
   unsigned int swidth;
   unsigned int sheight;
 };

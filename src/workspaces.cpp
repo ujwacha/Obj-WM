@@ -180,9 +180,12 @@ void Workspaces::set_current_layout(layout l)
 }
 
 int Workspaces::focus_window(WindowClass w) {
-  std::vector<WindowClass> work = this->get_all_current_windows();
+  std::vector<WindowClass>& work = this->get_all_current_windows();
 
   for (int i = 0; i < work.size(); i++) {
+
+    std::cout << w.get_window() << "==" << work[i].get_window() << std::endl;
+
     if (w == work[i]) {
       std::cout << "Focusing Window: " << work[i].get_window() << std::endl;
       work[i].focus();
