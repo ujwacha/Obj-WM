@@ -12,6 +12,7 @@ public:
 
   Workspaces() {
     workspac_.push_back(std::vector<WindowClass>()); // add the first workspace
+	layout_.push_back(master_stack);
   }
   
   int change_workspace(int nuber);

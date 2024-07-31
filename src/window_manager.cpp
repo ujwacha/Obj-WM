@@ -3,6 +3,7 @@
 #include <X11/Xlib.h>
 #include <algorithm>
 #include <bits/types/wint_t.h>
+#include <climits>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
@@ -89,10 +90,10 @@ void WindowManager::frame(WindowClass &w)
 void WindowManager::on_map_request(XMapRequestEvent &e)
 {
 
+  printf("on map request\n");
   focused = WindowClass(e.window);
   if(e.parent ==  root_)
   {
-
     try {
       workspaces.add_window(focused);
     } catch (int a) {
@@ -105,7 +106,6 @@ void WindowManager::on_map_request(XMapRequestEvent &e)
   } catch (const char* a) {
     std::cout << "[ERROR] manage(): " << a << std::endl;
   }
-
 }
 
 int WindowManager::manage_centered_master()
@@ -266,6 +266,7 @@ current_windows[0].dim.ypos = 0;
 int WindowManager::manage()
 {
   std::cout << "On manage function" << std::endl;
+  std::cout << workspaces.get_current_layout();
 
   switch (workspaces.get_current_layout()) {
 	case master_stack:
@@ -308,30 +309,24 @@ int WindowManager::on_configure_request(XConfigureRequestEvent &e) {
   return 0;
 }
 
-
-
-int WindowManager::on_create_notify(XCreateWindowEvent &e) {
-
-
-  focused = WindowClass(e.window);
-  if(e.parent ==  root_)
-  {
-
-    try {
-      workspaces.add_window(focused);
-    } catch (int a) {
-      std::cout << "[ERROR] on on_create_notify(), add window throws " << a << std::endl;
-    }
-
-    
-
-  };
-
-  XMapWindow(display_, focused.get_window());
-
-  return 0;
-
-}
+//int WindowManager::on_create_notify(XCreateWindowEvent &e) {
+//
+//
+  //focused = WindowClass(e.window);
+  //if(e.parent ==  root_)
+  //{
+//
+    //try {
+      //workspaces.add_window(focused);
+    //} catch (int a) {
+      //std::cout << "[ERROR] on on_create_notify(), add window throws " << a << std::endl;
+    //}
+//
+  //};
+//
+  //XMapWindow(display_, focused.get_window());
+  //return 0;
+//}
 
 
 int WindowManager::on_destroy_notify(XDestroyWindowEvent &e) {
@@ -348,7 +343,7 @@ void WindowManager::handle_events(XEvent &e)
   {
 	case CreateNotify:
 	  std::cout << "createnotify" << std::endl;
-	  this->on_create_notify(e.xcreatewindow);
+//	  this->on_create_notify(e.xcreatewindow);
 	  break;
 	case ConfigureRequest:
 	  std::cout << "configurerequest" << std::endl;
