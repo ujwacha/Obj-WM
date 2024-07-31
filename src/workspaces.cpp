@@ -15,14 +15,18 @@ int Workspaces::total_windows(int workspace_no) {
 }
 
 int Workspaces::change_workspace(int number) {
-  if (number < 0) {
+  if (number < 0) 
     throw -1;
-  } else if (number == this->total_workspaces()) {
-    workspac_.push_back(std::vector<WindowClass>());
-    current = number;
-  } else if (number > this->total_workspaces()) {
+  else if (number == this->total_workspaces())
+    {
+      workspac_.push_back(std::vector<WindowClass>());
+      current = number;
+    }
+  else if (number > this->total_workspaces())
     throw -2;
-  }
+  else
+    current = number;
+  
 
   return 0;
 }
