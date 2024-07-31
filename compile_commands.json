@@ -5,12 +5,12 @@
       "-I/home/suyog/stuff/cpp_projects/Obj-WM/inc",
       "-c",
       "-o",
-      "CMakeFiles/ObjWM.dir/src/window.cpp.o",
-      "/home/suyog/stuff/cpp_projects/Obj-WM/src/window.cpp"
+      "CMakeFiles/ObjWM.dir/src/main.cpp.o",
+      "/home/suyog/stuff/cpp_projects/Obj-WM/src/main.cpp"
     ],
     "directory": "/home/suyog/stuff/cpp_projects/Obj-WM/build",
-    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/window.cpp",
-    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/window.cpp.o"
+    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/main.cpp",
+    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/main.cpp.o"
   },
   {
     "arguments": [
@@ -31,12 +31,12 @@
       "-I/home/suyog/stuff/cpp_projects/Obj-WM/inc",
       "-c",
       "-o",
-      "CMakeFiles/ObjWM.dir/src/main.cpp.o",
-      "/home/suyog/stuff/cpp_projects/Obj-WM/src/main.cpp"
+      "CMakeFiles/ObjWM.dir/src/workspaces.cpp.o",
+      "/home/suyog/stuff/cpp_projects/Obj-WM/src/workspaces.cpp"
     ],
     "directory": "/home/suyog/stuff/cpp_projects/Obj-WM/build",
-    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/main.cpp",
-    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/main.cpp.o"
+    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/workspaces.cpp",
+    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/workspaces.cpp.o"
   },
   {
     "arguments": [
@@ -57,11 +57,11 @@
       "-I/home/suyog/stuff/cpp_projects/Obj-WM/inc",
       "-c",
       "-o",
-      "CMakeFiles/ObjWM.dir/src/workspaces.cpp.o",
-      "/home/suyog/stuff/cpp_projects/Obj-WM/src/workspaces.cpp"
+      "CMakeFiles/ObjWM.dir/src/window.cpp.o",
+      "/home/suyog/stuff/cpp_projects/Obj-WM/src/window.cpp"
     ],
     "directory": "/home/suyog/stuff/cpp_projects/Obj-WM/build",
-    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/workspaces.cpp",
-    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/workspaces.cpp.o"
+    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/window.cpp",
+    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/window.cpp.o"
   }
 ]
