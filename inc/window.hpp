@@ -18,12 +18,14 @@ public:
   };
 
 
-
-
   Window* get_window() {
     return this_win_;
   }
-  
+
+
+  int plot_window();
+    
+
 private:
   Window* this_win_;
   

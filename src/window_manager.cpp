@@ -83,12 +83,15 @@ void WindowManager::frame(Window &w)
 
 void WindowManager::on_map_request(XMapRequestEvent &e)
 {
+
+  focused = WindowClass(&e.window);
   if(e.parent ==  root_)
   {
-	frame(e.window);
-	XMapWindow(display_, e.window);
+    workspaces.add_window(focused);
   }
-  focused = e.window; 
+
+
+
 }
 
 
@@ -154,7 +157,7 @@ void WindowManager::Run() {
   for(;;){
 	XNextEvent(display_,&e);
 	handle_events(e);
-	XSync(display_, False);
+	XSync(display_, false);
   }
 
 }

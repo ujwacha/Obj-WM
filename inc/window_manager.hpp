@@ -25,17 +25,17 @@ private:
   static int on_x_err(Display* display, XErrorEvent* e);
   static int on_wm_detected(Display* display, XErrorEvent* e);
   void on_map_request(XMapRequestEvent &e);
-  void frame(Window &w);
+  void frame(WindowClass &w);
   void keypress(XKeyEvent &e);
   void setkeys();
   void setbuttons();
   void handle_events(XEvent &e);
-  void kill_window(Window &w);
-
+  void kill_window(WindowClass &w);
+  int manage();
 
   Display* display_;
   const Window root_;
   Workspaces workspaces;
-  Window focused;
+  WindowClass focused;
 };
 

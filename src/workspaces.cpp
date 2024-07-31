@@ -31,7 +31,7 @@ const std::vector<WindowClass>& Workspaces::get_all_current_windows() {
 
 
 
-int Workspaces::remove_window(WindowClass window, int space=-1) {
+int Workspaces::remove_window(WindowClass window, int space) {
 
   if (space < 0) {
     space = current;
@@ -107,7 +107,7 @@ int Workspaces::remove_all_window(WindowClass window) {
   throw -1;
 }
 
-int Workspaces::add_window(WindowClass window, int space=-1) {
+int Workspaces::add_window(WindowClass window, int space) {
   if (space < 0) {
     space = current;
   }
