@@ -11,6 +11,7 @@
 #include <glog/logging.h>
 #include <memory>
 #include <iostream>
+#include <ostream>
 #include <unistd.h>
 #include <vector>
 
@@ -72,7 +73,14 @@ void WindowManager::keypress(XKeyEvent &e)
 	{
 	  XCloseDisplay(display_);
 	  //kill_window(e.window);	
+	} else if (isKey("M")) {
+	  std::cout << "Managing\n";
+	  manage();
+	} else if (isKey("O")) {
+	  std::cout << "Terminal\n";
+	  system("xterm");
 	}
+
   }
 }
 
@@ -80,6 +88,9 @@ void WindowManager::setkeys()
 {
   MOD1BIND("D");//open dmenu
   MOD1BIND("Q");
+  MOD1BIND("M");
+  MOD1BIND("O");
+
 }
 
 void WindowManager::frame(WindowClass &w)
@@ -333,7 +344,15 @@ int WindowManager::on_destroy_notify(XDestroyWindowEvent &e) {
 
   workspaces.remove_all_window(WindowClass(e.window));
 
+  std::vector<WindowClass> th = workspaces.get_all_current_windows();
 
+
+  std::cout << "[[[[[Destroy Debug]]]]]" << std::endl;
+  
+  for (int i = 0; i < th.size(); i++) {
+    std::cout << "[Window] : " << th[i].get_window() << std::endl;
+  };
+  
   return 0;
 }
 

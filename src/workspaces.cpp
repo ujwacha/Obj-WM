@@ -169,6 +169,7 @@ int Workspaces::move_window_to_prev(WindowClass window) {
 
 layout Workspaces::get_current_layout()
 {
+  std::cout << "\ncurrent: " << current << " total: " << layout_.size() << std::endl;
   return layout_[current];
 }
 

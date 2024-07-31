@@ -2,53 +2,53 @@
   {
     "arguments": [
       "/usr/bin/c++",
-      "-I/home/suyog/stuff/cpp_projects/Obj-WM/inc",
+      "-I/home/light/Obj-WM/inc",
       "-c",
       "-o",
       "CMakeFiles/ObjWM.dir/src/main.cpp.o",
-      "/home/suyog/stuff/cpp_projects/Obj-WM/src/main.cpp"
+      "/home/light/Obj-WM/src/main.cpp"
     ],
-    "directory": "/home/suyog/stuff/cpp_projects/Obj-WM/build",
-    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/main.cpp",
-    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/main.cpp.o"
+    "directory": "/home/light/Obj-WM/build",
+    "file": "/home/light/Obj-WM/src/main.cpp",
+    "output": "/home/light/Obj-WM/build/CMakeFiles/ObjWM.dir/src/main.cpp.o"
   },
   {
     "arguments": [
       "/usr/bin/c++",
-      "-I/home/suyog/stuff/cpp_projects/Obj-WM/inc",
-      "-c",
-      "-o",
-      "CMakeFiles/ObjWM.dir/src/workspaces.cpp.o",
-      "/home/suyog/stuff/cpp_projects/Obj-WM/src/workspaces.cpp"
-    ],
-    "directory": "/home/suyog/stuff/cpp_projects/Obj-WM/build",
-    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/workspaces.cpp",
-    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/workspaces.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-I/home/suyog/stuff/cpp_projects/Obj-WM/inc",
+      "-I/home/light/Obj-WM/inc",
       "-c",
       "-o",
       "CMakeFiles/ObjWM.dir/src/window_manager.cpp.o",
-      "/home/suyog/stuff/cpp_projects/Obj-WM/src/window_manager.cpp"
+      "/home/light/Obj-WM/src/window_manager.cpp"
     ],
-    "directory": "/home/suyog/stuff/cpp_projects/Obj-WM/build",
-    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/window_manager.cpp",
-    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/window_manager.cpp.o"
+    "directory": "/home/light/Obj-WM/build",
+    "file": "/home/light/Obj-WM/src/window_manager.cpp",
+    "output": "/home/light/Obj-WM/build/CMakeFiles/ObjWM.dir/src/window_manager.cpp.o"
   },
   {
     "arguments": [
       "/usr/bin/c++",
-      "-I/home/suyog/stuff/cpp_projects/Obj-WM/inc",
+      "-I/home/light/Obj-WM/inc",
       "-c",
       "-o",
       "CMakeFiles/ObjWM.dir/src/window.cpp.o",
-      "/home/suyog/stuff/cpp_projects/Obj-WM/src/window.cpp"
+      "/home/light/Obj-WM/src/window.cpp"
     ],
-    "directory": "/home/suyog/stuff/cpp_projects/Obj-WM/build",
-    "file": "/home/suyog/stuff/cpp_projects/Obj-WM/src/window.cpp",
-    "output": "/home/suyog/stuff/cpp_projects/Obj-WM/build/CMakeFiles/ObjWM.dir/src/window.cpp.o"
+    "directory": "/home/light/Obj-WM/build",
+    "file": "/home/light/Obj-WM/src/window.cpp",
+    "output": "/home/light/Obj-WM/build/CMakeFiles/ObjWM.dir/src/window.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-I/home/light/Obj-WM/inc",
+      "-c",
+      "-o",
+      "CMakeFiles/ObjWM.dir/src/workspaces.cpp.o",
+      "/home/light/Obj-WM/src/workspaces.cpp"
+    ],
+    "directory": "/home/light/Obj-WM/build",
+    "file": "/home/light/Obj-WM/src/workspaces.cpp",
+    "output": "/home/light/Obj-WM/build/CMakeFiles/ObjWM.dir/src/workspaces.cpp.o"
   }
 ]
