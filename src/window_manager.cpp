@@ -103,10 +103,62 @@ int WindowManager::on_x_err(Display* display, XErrorEvent* event) {
   return -1;
 }
 
-void WindowManager::kill_window(WindowClass &w)
+void WindowManager::kill_window()
 {
-  XDestroyWindow(display_, w.get_window());
+  XDestroyWindow(display_, focused.get_window());
 }
+
+
+
+int WindowManager::unmap_all() {
+
+  std::vector<WindowClass> working = workspaces.get_all_current_windows();
+
+  for (int i = 0; i < working.size(); i++) {
+    if (working[i].get_window() == 0) {
+      continue;
+    }
+
+    XUnmapWindow(display_, working[i].get_window());
+  }
+
+  return 0;
+}
+
+int WindowManager::front_move() {
+  workspaces.move_front(focused);
+  manage();
+  return 0;
+}
+int WindowManager::back_move() {
+  workspaces.move_back(focused);
+  manage();
+  return 0;
+}
+
+int WindowManager::next_workspace() {
+  unmap_all();
+  XSync(display_, false);
+
+  workspaces.change_workspace(workspaces.get_current() + 1);
+
+  manage();
+  return 0;
+}
+
+
+int WindowManager::prev_workspace() {
+  unmap_all();
+  XSync(display_, false);
+
+  workspaces.change_workspace(workspaces.get_current() - 1);
+
+  manage();
+  
+  return 0;
+}
+
+
 
 void WindowManager::keypress(XKeyEvent &e)
 {
@@ -119,8 +171,8 @@ void WindowManager::keypress(XKeyEvent &e)
 	}
 	else if (isKey("Q"))
 	{
-	  XCloseDisplay(display_);
-	  //kill_window(e.window);	
+	  //XCloseDisplay(display_);
+	  kill_window();	
 	} else if (isKey("M")) {
 	  std::cout << "Managing\n";
 	  manage();
@@ -136,7 +188,25 @@ void WindowManager::keypress(XKeyEvent &e)
 	  focus_next();
 	} else if (isKey("H")) {
 	  focus_prev();
+	} else if (isKey("B")) {
+	  back_move();
+	} else if (isKey("N")) {
+	  front_move();
+	} else if (isKey("A")) {
+	  prev_workspace();
+	} else if (isKey("S")) {
+	  next_workspace();
 	}
+
+  }
+
+  if (e.state & ShiftMask) {
+    if (isKey("H")) {
+      front_move();
+    } else if (isKey("L")) {
+      back_move();
+    }
+
   }
 }
 
@@ -150,7 +220,15 @@ void WindowManager::setkeys()
   MOD1BIND("K");
   MOD1BIND("L");
   MOD1BIND("H");
+  MOD1BIND("B");
+  MOD1BIND("N");
 
+  MOD1BIND("S");
+  MOD1BIND("A");
+
+
+  SHIFTBIND("H");
+  SHIFTBIND("L");
 
 }
 

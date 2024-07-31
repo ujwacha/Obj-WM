@@ -8,6 +8,7 @@ extern "C" {
 
 #define isKey(K) e.keycode == XKeysymToKeycode(display_, XStringToKeysym(K))
 #define MOD1BIND(K) XGrabKey(display_, XKeysymToKeycode(display_, XStringToKeysym(K)), Mod1Mask, root_, True, GrabModeAsync, GrabModeAsync)
+#define SHIFTBIND(K) XGrabKey(display_, XKeysymToKeycode(display_, XStringToKeysym(K)), ShiftMask, root_, True, GrabModeAsync, GrabModeAsync)
 
 
 
@@ -30,7 +31,7 @@ private:
   void setkeys();
   void setbuttons();
   void handle_events(XEvent &e);
-  void kill_window(WindowClass &w);
+  void kill_window();
   int manage();
   int on_configure_request(XConfigureRequestEvent &e);
   int on_create_notify(XCreateWindowEvent &e);
@@ -40,6 +41,12 @@ private:
   int manage_centered_master();
   int focus_next();
   int focus_prev();
+  int front_move();
+  int back_move();
+  int unmap_all();
+  int next_workspace();
+  int prev_workspace();
+
 
   Display* display_;
   const Window root_;
