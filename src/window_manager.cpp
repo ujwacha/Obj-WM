@@ -182,12 +182,19 @@ void WindowManager::keypress(XKeyEvent &e) {
     } else if (isKey("Q")) {
       // XCloseDisplay(display_);
       kill_window();
-    } else if (isKey("M")) {
-      std::cout << "Managing\n";
+     }else if (isKey("1")) {
+	  workspaces.set_current_layout(master_stack);
       manage();
     } else if (isKey("O")) {
       std::cout << "Terminal\n";
-    } else if (isKey("J")) {
+    } else if(isKey("2"))
+	{
+	  workspaces.set_current_layout(centered_master);
+	  manage();
+	} else if (isKey("3")) {
+	  workspaces.set_current_layout(tree);
+	  manage();
+	}	else if (isKey("J")) {
       increase_size();
     } else if (isKey("K")) {
       decrease_size();
@@ -233,7 +240,7 @@ void WindowManager::keypress(XKeyEvent &e) {
 void WindowManager::setkeys() {
   MOD1BIND("D"); // open dmenu
   MOD1BIND("Q");
-  MOD1BIND("M");
+  MOD1BIND("3");
   MOD1BIND("O");
   MOD1BIND("J");
   MOD1BIND("K");
@@ -247,6 +254,8 @@ void WindowManager::setkeys() {
   MOD1BIND("U");
 
   MOD1BIND("T");
+  MOD1BIND("1");
+  MOD1BIND("2");
   MOD1BIND("Y");
   MOD1BIND("W");
 
@@ -295,6 +304,7 @@ int WindowManager::manage() {
 
   case centered_master:
     manage_centered_master();
+	break;
 
   default:
     manage_master_stack();
@@ -357,11 +367,8 @@ int WindowManager::on_destroy_notify(XDestroyWindowEvent &e) {
   for (int i = 0; i < th.size(); i++) {
     std::cout << "[Window] : " << th[i].get_window() << std::endl;
   };
-
-  manage();
   return 0;
 }
-
 
 int WindowManager::on_enter_notify(XCrossingEvent &e) {
   Window root, window, parent;
@@ -387,7 +394,6 @@ int WindowManager::on_enter_notify(XCrossingEvent &e) {
 
   return -1;
 }
-
 
 int WindowManager::on_motion_notify(XMotionEvent &e) {
   if(e.subwindow == None && e.subwindow == focused.get_window()) return -1;
@@ -450,7 +456,7 @@ void WindowManager::Run() {
   XSetErrorHandler(&WindowManager::on_wm_detected);
   XSelectInput(display_, root_,
                SubstructureRedirectMask | SubstructureNotifyMask |
-                   EnterWindowMask | MotionNotify | PointerMotionMask);
+                   EnterWindowMask | MotionNotify);
 
   XSync(display_, false);
   setkeys();
